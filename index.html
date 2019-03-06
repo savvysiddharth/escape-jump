@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ballyJump</title>
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src = "lib/p5.min.js" type="text/javascript"></script>
+
+  <script src = "js/world.js" type="text/javascript"></script>
+  <script src = "js/ball.js" type="text/javascript"></script>
+  <script src = "js/game.js" type="text/javascript"></script>
+</head>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+
+  .msg {
+    font-size: 13px;
+    font-weight: 100;
+  }
+
+  .top *{
+    display: inline;
+  }
+
+  .btn {
+    padding: 4px;
+    border-color : rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.5s;
+  }
+
+  .btn:hover {
+    background-color: grey;
+    color: white;
+    transition: all 0.5s;
+  }
+
+</style>
+<body>
+  <div class="top" style="display:block">
+    <h3>Escape jump</h3>
+    <button onclick="reloadPage()" class="btn">Restart game</button>
+  </div>
+  <br>
+</body>
+<script>
+  function reloadPage() {
+    location.reload();
+  }
+</script>
+</html>

@@ -10,7 +10,7 @@ class Ball {
   }
 
   draw() {
-    fill('rgba(42,100,12,0.7)');
+    fill('rgb(224, 24, 24)');
     const {x,y,diameter} = this;
     ellipse(x,y,diameter,diameter);
   }
@@ -18,7 +18,7 @@ class Ball {
   worldEffect() {
     const {gravity,width,height} = world;
 
-    const {speedY,speedX} = this;
+    const {speedY,speedX,x} = this;
     this.y += speedY;
     this.speedY += gravity;
 
@@ -38,13 +38,21 @@ class Ball {
     } else {
       this.speedX += world.airFriction;
     }
+
+    if(x >= width || x <= 0) {
+      this.speedX = 0;
+    }
   }
 
   moveRight() {
-    this.speedX = 4;
+    const {x} = this;
+    if (x <= width)
+      this.speedX = 4;
   }
   moveLeft() {
-    this.speedX = -4;
+    const {x} = this;
+    if (x >= 0)
+      this.speedX = -4;
   }
 
   jump() {

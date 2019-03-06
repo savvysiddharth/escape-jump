@@ -1,3 +1,5 @@
+const BAR_STOPS_AT = 50; //pixel from bottom
+
 class BarGroup {
   constructor(y) {
     this.height = 30;
@@ -28,10 +30,7 @@ class BarGroup {
     let rwidth = this.right.width;
     let lx = this.left.x;
     let lwidth = this.left.width;
-    if(this.completed)
-      fill(255,52,21);
-    else
-      fill(100);
+    fill(0);
     rect(rx, y, rwidth, height);
     rect(lx, y, lwidth, height);
   }
@@ -51,7 +50,7 @@ class BarGroup {
       this.right.speed = 0;
     }
 
-    if(y > world.height - 30 - 50) {
+    if(y > world.height - this.height - BAR_STOPS_AT) {
       this.speedY = 0;
     }
 
@@ -93,10 +92,11 @@ function setup() {
 }
 
 let score = -1;
+let gameOver = false;
 
 function draw() {
   frameRate(60);
-  background(0);
+  background(150);
   ball.draw();
   ball.worldEffect();
   for(b of barGroups) {
@@ -124,12 +124,23 @@ function draw() {
   }
 
   if(ball.y >= world.height) {
+    gameOver = true;
+  }
+
+  if(score >= 0) {
+    const d2 = world.height - BAR_STOPS_AT - 30;
+    const d1 = barGroups[score+1].y + barGroups[score+1].height;
+    if( d2 - d1 <= ball.diameter) {
+      gameOver = true;
+    }
+  }
+
+  if(gameOver) {
     console.log('game over');
     textSize(32);
     text("game over",100,100);
     noLoop();
   }
-
 }
 
 function keyPressed() {
@@ -147,14 +158,6 @@ function keyPressed() {
 
   if(keyCode == 37) //left
     ball.moveLeft();
-}
-
-function mousePressed() {
-  let b = barGroups[0];
-  if(ball.collisionCheckv2(b)) {
-    ball.jump();
-  }
-  return false;
 }
 
 // function touchStarted() {
