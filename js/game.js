@@ -1,4 +1,5 @@
 const BAR_STOPS_AT = 50; //pixel from bottom
+const MAX_BARS = 10; //total bars per level
 
 class BarGroup {
   constructor(y) {
@@ -81,7 +82,7 @@ function setup() {
 
   barGroups[0] = new BarGroup(world.height-100);
   barGroups[0].left.width = world.width;
-  for(let i = 1; i<=9 ; i++) {
+  for(let i = 1; i<=MAX_BARS ; i++) {
     barGroups[i] = new BarGroup(-i*300);
   }
   // barGroups[1] = new BarGroup(-300);
@@ -93,6 +94,7 @@ function setup() {
 
 let score = -1;
 let gameOver = false;
+let gameLevel = -1;
 
 function draw() {
   frameRate(60);
@@ -109,11 +111,12 @@ function draw() {
           score++;
           b.counted = true;
           console.log('score:',score);
-          if(score%9 == 0) {
-            for(let i = 1; i<=9 ; i++) {
+          if(score%MAX_BARS == 0) { //level up
+            gameLevel++;
+            console.log("level:",gameLevel);
+            for(let i = 1; i<=MAX_BARS ; i++) {
               barGroups[i] = new BarGroup(-(i-1)*300);
             }
-            console.log(barGroups);
           }
         }
         ball.speedY = b.speedY;
@@ -127,9 +130,9 @@ function draw() {
     gameOver = true;
   }
 
-  if(score >= 0) {
+  if(score >= 0 && score < MAX_BARS*(gameLevel + 1)) {
     const d2 = world.height - BAR_STOPS_AT - 30;
-    const d1 = barGroups[score+1].y + barGroups[score+1].height;
+    const d1 = barGroups[(score + 1) - (gameLevel*10)].y + barGroups[(score + 1) - (gameLevel*10)].height;
     if( d2 - d1 <= ball.diameter) {
       gameOver = true;
     }
