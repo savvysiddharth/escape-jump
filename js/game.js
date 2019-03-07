@@ -9,8 +9,8 @@ class BarGroup {
     this.speedY = 1;
     this.counted = false; //counted for score.
 
-    this.speedXr = random(1,4);
-    this.speedXl = random(1,4);
+    this.speedXr = random(1,5);
+    this.speedXl = random(1,5);
 
     this.left = {
       x : 0,
@@ -46,19 +46,19 @@ class BarGroup {
 
     let gap = this.right.x - this.left.width;
 
-    if(gap <= 0) {
+    if (gap <= 0) {
       this.left.speed = 0;
       this.right.speed = 0;
     }
 
-    if(y > world.height - this.height - BAR_STOPS_AT) {
+    if (y > world.height - this.height - BAR_STOPS_AT) {
       this.speedY = 0;
     }
 
     if (y <= 300) {
       this.right.speed=0;
       this.left.speed=0;
-    } else if(gap >= 0) {
+    } else if (gap >= 0) {
       this.right.speed=this.speedXr;
       this.left.speed=this.speedXl;
     }
@@ -73,23 +73,17 @@ let barGroups = []; //bar groups
 
 function setup() {
   noStroke();
-  createCanvas(world.width,world.height);
+  const canv = createCanvas(world.width,world.height);
+  canv.style('border-radius','5px');
 
   ball = new Ball(world);
-  // rect1 = new Rect(0,0,0,30);
-  // rect2 = new Rect(world.width, 0, world.width, 30);
   ball.x = width/2;
 
   barGroups[0] = new BarGroup(world.height-100);
   barGroups[0].left.width = world.width;
-  for(let i = 1; i<=MAX_BARS ; i++) {
+  for (let i = 1; i<=MAX_BARS ; i++) {
     barGroups[i] = new BarGroup(-i*300);
   }
-  // barGroups[1] = new BarGroup(-300);
-  // barGroups[2] = new BarGroup(-600);
-  // barGroups[3] = new BarGroup(-900);
-  // barGroups[4] = new BarGroup(-1200);
-  // barGroups[5] = new BarGroup(-1500);
 }
 
 let score = -1;
@@ -101,39 +95,38 @@ function draw() {
   background(150);
   ball.draw();
   ball.worldEffect();
-  for(b of barGroups) {
+  for (b of barGroups) {
     b.draw()
     b.move();
-    if(val = ball.collisionCheckv3(b)) {
-      // console.log('collision', val);
-      if(val < 3) { // (top surface)
-        if(!b.counted) {
+    if (val = ball.collisionCheckv3(b)) {
+      if (val < 3) { // (top surface)
+        if (!b.counted) {
           score++;
           b.counted = true;
           console.log('score:',score);
-          if(score%MAX_BARS == 0) { //level up
+          if (score%MAX_BARS == 0) { //level up
             gameLevel++;
             console.log("level:",gameLevel);
-            for(let i = 1; i<=MAX_BARS ; i++) {
-              barGroups[i] = new BarGroup(-(i-1)*300);
+            for (let i = 1; i <= MAX_BARS ; i++) {
+              barGroups[i] = new BarGroup(-(i-1) * 300);
             }
           }
         }
         ball.speedY = b.speedY;
-      } else if(val > 3) { // (bottom surface)
+      } else if (val > 3) { // (bottom surface)
         ball.speedY = 3; //thrust down
       }
     }
   }
 
-  if(ball.y >= world.height) {
+  if (ball.y >= world.height) {
     gameOver = true;
   }
 
-  if(score >= 0 && score < MAX_BARS*(gameLevel + 1)) {
+  if (score >= 0 && score < MAX_BARS*(gameLevel + 1)) {
     const d2 = world.height - BAR_STOPS_AT - 30;
     const d1 = barGroups[(score + 1) - (gameLevel*10)].y + barGroups[(score + 1) - (gameLevel*10)].height;
-    if( d2 - d1 <= ball.diameter) {
+    if ( d2 - d1 <= ball.diameter && ball.y > (d2 - ball.diameter)) { //one more condition for ball pos on gameover yet to be added
       gameOver = true;
     }
   }
@@ -147,23 +140,18 @@ function draw() {
 }
 
 function keyPressed() {
-  if(keyCode == 38 ) {
-    for(b of barGroups) {
-      if(ball.collisionCheckv3(b) < 3) {
+  if (keyCode == 38 ) {
+    for (b of barGroups) {
+      if (ball.collisionCheckv3(b) < 3) {
         ball.jump();
         return false;
       }
     }
   }
 
-  if(keyCode == 39) //right
+  if (keyCode == 39) //right
     ball.moveRight();
 
-  if(keyCode == 37) //left
+  if (keyCode == 37) //left
     ball.moveLeft();
 }
-
-// function touchStarted() {
-//   ball.jump();
-//   return false;
-// }

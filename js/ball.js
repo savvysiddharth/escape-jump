@@ -22,24 +22,15 @@ class Ball {
     this.y += speedY;
     this.speedY += gravity;
 
-    // if(this.y >= world.height-35 && !keyIsPressed)
-    //   this.speed=0;
-
-    // if(this.y <= world.height-30) {
-    //   const {speed} = this;
-    //   this.y += speed;
-    //   this.speed += gravity;
-    // }
-
     this.x += speedX;
 
-    if(speedX > 0) {
+    if (speedX > 0) {
       this.speedX -= world.airFriction;
     } else {
       this.speedX += world.airFriction;
     }
 
-    if(x >= width || x <= 0) {
+    if (x >= width || x <= 0) {
       this.speedX = 0;
     }
   }
@@ -63,11 +54,11 @@ class Ball {
   collisionWithBar(bar) {
     const radius = this.diameter/2;
 
-    if(this.x - radius <= bar.left.width && (this.y - radius <= bar.y + bar.height  && this.y + radius >= bar.y) ) {
+    if (this.x - radius <= bar.left.width && (this.y - radius <= bar.y + bar.height  && this.y + radius >= bar.y) ) {
       return true;
     }
 
-    if(this.x + radius >= bar.right.x && (this.y - radius <= bar.y + bar.height  && this.y + radius >= bar.y) ) {
+    if (this.x + radius >= bar.right.x && (this.y - radius <= bar.y + bar.height  && this.y + radius >= bar.y) ) {
       return true;
     }
     return false;
@@ -85,7 +76,7 @@ class Ball {
     const radius = this.diameter/2;
 
     //left
-    if(this.x - radius <= bar.left.width) {
+    if (this.x - radius <= bar.left.width) {
       //top-surface
       if (this.y + radius >= bar.y && this.y + radius <= bar.y + bar.height) {
         return 1;
@@ -97,7 +88,7 @@ class Ball {
     }
 
     //right
-    if(this.x + radius >= bar.right.x) {
+    if (this.x + radius >= bar.right.x) {
       //top-surface
       if (this.y + radius >= bar.y && this.y + radius <= bar.y + bar.height) {
         return 3;
@@ -123,13 +114,13 @@ class Ball {
     const radius = this.diameter/2;
     //top surface
     if (this.y + radius >= bar.y && this.y + radius <= bar.y + bar.height) {
-      if(this.x - radius <= bar.left.width) return 1; //left
-      if(this.x + radius >= bar.right.x) return 2; //right
+      if (this.x - radius <= bar.left.width) return 1; //left
+      if (this.x + radius >= bar.right.x) return 2; //right
     }
     //bottom surface
     if (this.y - radius <= bar.y + bar.height && this.y - radius >= bar.y) {
-      if(this.x - radius <= bar.left.width) return 4; //left
-      if(this.x + radius >= bar.right.x) return 5; //right
+      if (this.x - radius <= bar.left.width) return 4; //left
+      if (this.x + radius >= bar.right.x) return 5; //right
     }
     return 3;
   }
