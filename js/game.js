@@ -131,10 +131,15 @@ function draw() {
     }
   }
 
+  fill(255);
+  textSize(20);
+  text("score: "+score, 15, 25);
+
   if(gameOver) {
     console.log('game over');
     textSize(32);
-    text("game over",100,100);
+    text("game over",170,200);
+
     noLoop();
   }
 }
